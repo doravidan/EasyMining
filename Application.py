@@ -1,4 +1,4 @@
-from Dockers import init_docker
+from RunMiner import init_docker
 from tkinter import *
 import threading
 from tkinter import ttk
