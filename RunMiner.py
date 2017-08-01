@@ -21,6 +21,13 @@ def init_docker(wallet_address, currency, miner, pool):
         print (line),
     p.stdout.close()
     p.wait()
-    
-    
-    subprocess.call("for i in {1..5}; do echo 1 && sleep 1; done", shell=True)
+
+
+p = subprocess.Popen("for i in {1..5}; do echo $i && sleep 1; done", stdout=subprocess.PIPE, shell=True)
+
+while(not p.poll()):
+    line = p.stdout.readline().rstrip()
+    if line != '':
+        print(line)
+    else:
+        break
