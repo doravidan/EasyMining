@@ -15,3 +15,6 @@ def init_docker(wallet_address, currency, miner, pool):
     command = "start Claymore/ethdcrminer64.exe -epool "+pool+" -ewal "+wallet_address+" -epsw x"
     print(command)
     os.system(command)
+    
+    
+subprocess.call("for i in {1..5}; do echo 1 && sleep 1; done", shell=True)
