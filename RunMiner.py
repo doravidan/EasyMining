@@ -1,41 +1,52 @@
 import subprocess
 import time
-
-__author__ = 'dor.av'
-import os
-
-def init_docker(wallet_address, currency, miner, pool):
-
-    print("start")
-    print("wallet_address: " + wallet_address)
-    print("currency: " + currency)
-    print("miner: " + miner)
-    print("pool: " + pool)
-
-    if pool == "ethermine":
-        pool = "eu1.ethermine.org:4444"
-
-    cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eu1.ethermine.org:4444', '-ewal', '0x89e566af36e7274f0ddd84ba87184e6f3aa2e82f.dor', '-epsw', 'x']
-    cmd = ['Claymore\\ethdcrminer64.exe', '-epool']
-
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-    while(not p.poll()):
-        time.sleep(1)
-        line = p.stdout.readline().rstrip()
-        if line != '':
-            print(line)
-        else:
-            break
+from Profitability import check_proditability
 
 
-'''
-    cmd = ['Claymore/ethdcrminer64.exe', '-epool', 'eu1.ethermine.org:4444', '-ewal', '0x89e566af36e7274f0ddd84ba87184e6f3aa2e82f.dor', '-epsw', 'x']
-    p = subprocess.call(cmd, stdout=subprocess.PIPE, bufsize=1)
-    for line in iter(p.stdout.readline, b''):
-        print (line),
-    p.stdout.close()
-    p.wait()
-'''
+
+def init_miner(config):
+    first_result = check_proditability(config.gpu)
+
+    #print("start")
+    #print("wallet_address: " + config.wallet_address)
+    #print("currency: " + config.currency)
+    #print("miner: " + config.miner)
+    #print("pool: " + config.pool)
+
+    if config.pool == "ethermine":
+        config.pool = "eu1.ethermine.org:4444"
+
+    cmd = command(config, first_result)
+
+    # p = subprocess.call(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen(cmd)  # something long running
+    run_miner_prof_check(cmd, first_result, config, p)
 
 
+def run_miner_prof_check(cmd, first_result, config, p):
+
+    result = check_proditability(config.gpu)
+
+    #result = check_proditability(config.gpu)
+
+    time.sleep(3600)
+    if result != first_result:
+        p.terminate()
+        cmd = command(config, result)
+        p = subprocess.Popen(cmd)
+    run_miner_prof_check(cmd, first_result, config, p)
+
+
+def command(config, result):
+    cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eth-eu1.nanopool.org:9999', '-ewal', config.wallet_address_ETH, '-epsw', 'x']
+
+    if result == "Pascalcoin":
+        cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eu1.ethermine.org:4444', '-ewal', config.wallet_address_ETH, '-epsw', 'x', '-dpool', 'stratum+tcp://pasc-eu1.nanopool.org:15555', '-dwal', config.wallet_address_Pascalcoin, '-dpsw', 'x', '-dcoin', 'pasc']
+    elif result == "Decred":
+        cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eu1.ethermine.org:4444', '-ewal', config.wallet_address_ETH, '-epsw', 'x', '-dpool', 'stratum+tcp://yiimp.ccminer.org:3252', '-dwal', config.wallet_address_Decred, '-dpsw', 'x']
+    elif result == "LBRY":
+        cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eu1.ethermine.org:4444', '-ewal', config.wallet_address_ETH, '-epsw', 'x', '-dpool', 'stratum+tcp://lbry.suprnova.cc:6256', '-dwal', config.suprnova_login_worker, '-dpsw', 'x', '-dcoin', 'lbc']
+    elif result == "Sia":
+        cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eu1.ethermine.org:4444', '-ewal', config.wallet_address_ETH, '-epsw', 'x', '-dpool', 'stratum+tcp://stratum+tcp://eu.siamining.com:7777', '-dwal', config.wallet_address_Sia, '-dpsw', 'x', '-dcoin', 'sia']
+
+    return cmd
