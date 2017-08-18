@@ -5,31 +5,20 @@ from Profitability import check_proditability
 
 
 def init_miner(config):
-    first_result = check_proditability(config.gpu)
-
-    #print("start")
-    #print("wallet_address: " + config.wallet_address)
-    #print("currency: " + config.currency)
-    #print("miner: " + config.miner)
-    #print("pool: " + config.pool)
-
-    cmd = command(config, first_result)
-
-    # p = subprocess.call(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    old_result = check_proditability(config.gpu)
+    cmd = command(config, old_result)
     p = subprocess.Popen(cmd)  # something long running
-    run_miner_prof_check(cmd, first_result, config, p)
+    run_miner_prof_check(cmd, old_result, config, p)
 
-
-def run_miner_prof_check(cmd, first_result, config, p):
-
-    result = check_proditability(config.gpu)
-
+def run_miner_prof_check(cmd, old_result, config, p):
     time.sleep(3600)
-    if result != first_result:
+    result = check_proditability(config.gpu)
+    if result != old_result:
         p.terminate()
         cmd = command(config, result)
         p = subprocess.Popen(cmd)
-    run_miner_prof_check(cmd, first_result, config, p)
+        old_result = result
+    run_miner_prof_check(cmd, old_result, config, p)
 
 
 def command(config, result):
