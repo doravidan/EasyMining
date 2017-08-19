@@ -24,12 +24,12 @@ def command(config, result):
     cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eth-eu1.nanopool.org:9999', '-ewal', config.wallet_address_ETH, '-epsw', 'x']
 
     if result == "Pascalcoin":
-        cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eth-eu1.nanopool.org:9999', '-ewal', config.wallet_address_ETH, '-epsw', 'x', '-dpool', 'stratum+tcp://pasc-eu1.nanopool.org:15555', '-dwal', config.wallet_address_Pascalcoin, '-dpsw', 'x', '-dcoin', 'pasc']
+        cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eth-eu1.nanopool.org:9999', '-ewal', config.wallet_address_Pascalcoin, '-epsw', 'x', '-dpool', 'stratum+tcp://pasc-eu1.nanopool.org:15555', '-dwal', config.wallet_address_Pascalcoin, '-dpsw', 'x', '-dcoin', 'pasc']
     elif result == "Decred":
-        cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eth-eu1.nanopool.org:9999', '-ewal', config.wallet_address_ETH, '-epsw', 'x', '-dpool', 'stratum+tcp://yiimp.ccminer.org:4252', '-dwal', config.wallet_address_Decred, '-dpsw', 'x']
+        cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eth-eu1.nanopool.org:9999', '-ewal', config.wallet_address_Decred, '-epsw', 'x', '-dpool', 'stratum+tcp://yiimp.ccminer.org:4252', '-dwal', config.wallet_address_Decred, '-dpsw', 'x']
     elif result == "LBRY":
-        cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eth-eu1.nanopool.org:9999', '-ewal', config.wallet_address_ETH, '-epsw', 'x', '-dpool', 'stratum+tcp://lbry.suprnova.cc:6256', '-dwal', config.suprnova_login_worker, '-dpsw', 'x', '-dcoin', 'lbc']
+        cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eth-eu1.nanopool.org:9999', '-ewal', config.wallet_address_LBRY, '-epsw', 'x', '-dpool', 'stratum+tcp://lbry.suprnova.cc:6256', '-dwal', config.suprnova_login_worker, '-dpsw', 'x', '-dcoin', 'lbc']
     elif result == "Sia":
-        cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eth-eu1.nanopool.org:9999', '-ewal', config.wallet_address_ETH, '-epsw', 'x', '-dpool', 'stratum+tcp://sia-eu1.nanopool.org:7777', '-dwal', config.wallet_address_Sia, '-dpsw', 'x', '-dcoin', 'sia']
+        cmd = ['Claymore\\ethdcrminer64.exe', '-epool', 'eth-eu1.nanopool.org:9999', '-ewal', config.wallet_address_Sia, '-epsw', 'x', '-dpool', 'stratum+tcp://sia-eu1.nanopool.org:7777', '-dwal', config.wallet_address_Sia, '-dpsw', 'x', '-dcoin', 'sia']
 
     return cmd
