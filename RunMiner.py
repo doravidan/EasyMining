@@ -9,6 +9,7 @@ def init_miner(config):
     p = subprocess.Popen(cmd)  # something long running
     run_miner_prof_check(cmd, old_result, config, p)
 
+
 def run_miner_prof_check(cmd, old_result, config, p):
     time.sleep(config.profitability_time_check)
     result = check_proditability(config.gpu)
